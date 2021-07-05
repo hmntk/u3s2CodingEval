@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notes App</title>
+    <style>
+      body {
+        width: 50%;
+        margin: auto;
+      }
+      #container {
+        display: flex;
+        flex-direction: row;
+      }
+      #containerLeft,
+      #containerRight {
+        background: palegreen;
+        border-radius: 15px;
+        padding: 2%;
+        margin: 1%;
+      }
+      #containerLeft {
+        width: 40%;
+      }
+      #containerRight {
+        width: 58%;
+      }
+
+      #containerRight p {
+        background: rgb(119, 245, 119);
+      }
+      #add {
+        /* width: 30%; */
+        display: flex;
+        flex-direction: column;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to the Notes Application</h1>
+    <h3>Here you can add and view notes on a day to day basis</h3>
+    <div id="container">
+      <div id="containerLeft">
+        <div id="add">
+          <h2>Add your notes here</h2>
+          <select name="day" id="day">
+            <option value="Day 1">Day1</option>
+            <option value="Day 2">Day2</option>
+            <option value="Day 3">Day3</option>
+            <option value="Day 4">Day4</option>
+            <option value="Day 5">Day5</option>
+            <option value="Day 6">Day6</option>
+            <option value="Day 7">Day7</option>
+            <option value="Day 8">Day8</option>
+            <option value="Day 9">Day9</option>
+            <option value="Day 10">Day10</option>
+            <option value="Day 11">Day11</option>
+            <option value="Day 12">Day12</option>
+            <option value="Day 13">Day13</option>
+            <option value="Day 14">Day14</option>
+            <option value="Day 15">Day15</option>
+            <option value="Day 16">Day16</option>
+          </select>
+          <textarea name="notes" id="notes" cols="30" rows="10"></textarea>
+          <input type="submit" onclick="addNotes()" value="Add Notes" />
+        </div>
+        <div id="view">
+          <h2>View your notes here</h2>
+          <select name="day" id="dayView">
+            <option value="Day 1">Day1</option>
+            <option value="Day 2">Day2</option>
+            <option value="Day 3">Day3</option>
+            <option value="Day 4">Day4</option>
+            <option value="Day 5">Day5</option>
+            <option value="Day 6">Day6</option>
+            <option value="Day 7">Day7</option>
+            <option value="Day 8">Day8</option>
+            <option value="Day 9">Day9</option>
+            <option value="Day 10">Day10</option>
+            <option value="Day 11">Day11</option>
+            <option value="Day 12">Day12</option>
+            <option value="Day 13">Day13</option>
+            <option value="Day 14">Day14</option>
+            <option value="Day 15">Day15</option>
+            <option value="Day 16">Day16</option>
+          </select>
+          <input type="submit" onclick="viewNotes()" value="View Notes" />
+        </div>
+      </div>
+      <div id="containerRight">
+        <h3>Your Notes here</h3>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  // I HAVENT GOT TIME WITH IMPORT-EXPORT AND HENCE I AM NOT IMPLEMENTING IT HERE AND DOING THE WHOLE PROBLEM USING LOCAL STORAGE AND NOTHING ELSE.
+
+  let notesDB = {};
+
+  addNotes = () => {
+    console.log(document.getElementById("day").value);
+    let day = document.getElementById("day").value;
+    let note = document.getElementById("notes").value;
+
+    if (notesDB[day] == undefined) {
+      notesDB[day] = [];
+    }
+    let notesArray = notesDB[day];
+    notesArray.push(note);
+    console.log(notesDB);
+    localStorage.setItem("notesDB", JSON.stringify(notesDB));
+  };
+  let viewNotes = () => {
+    document.getElementById("containerRight").innerHTML = null;
+    let day = document.getElementById("dayView").value;
+    let notesDB = JSON.parse(localStorage.getItem("notesDB"));
+    console.log(day);
+
+    if (notesDB[day] == undefined) {
+      document.getElementById("containerRight").innerHTML =
+        "<h3>Please Add Notes</h3>";
+    } else {
+      for (key in notesDB) {
+        if (key == day) {
+          let h3 = document.createElement("h3");
+          h3.innerHTML = key;
+          document.getElementById("containerRight").append(h3);
+
+          for (let i = 0; i < notesDB[key].length; i++) {
+            let p = document.createElement("p");
+            p.innerHTML = notesDB[key][i];
+            document.getElementById("containerRight").append(p);
+          }
+        }
+      }
+    }
+
+    //console.log(notesDB);
+  };
+</script>
